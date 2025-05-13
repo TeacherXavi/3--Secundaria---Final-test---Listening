@@ -1,31 +1,49 @@
-<script>
-  var audio = document.getElementById("examAudio");
-  var playCount = parseInt(sessionStorage.getItem("playCount")) || 0; // Asegura que sea un número
-  console.log("Initial playCount:", playCount); // Para depurar
-  if (playCount >= 2) {
-    document.querySelector("button").disabled = true;
-  }
-  function playAudio() {
-    if (playCount < 2) {
-      try {
-        audio.play();
-        playCount++;
-        console.log("Play count incremented to:", playCount); // Para depurar
-        sessionStorage.setItem("playCount", playCount);
-        if (playCount === 2) {
-          document.querySelector("button").disabled = true;
-          console.log("Limit reached, button disabled");
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <title>Examen de Listening: School Life</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+    button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    button:disabled { cursor: not-allowed; opacity: 0.5; }
+    p { font-size: 18px; color: #333; }
+  </style>
+</head>
+<body>
+  <h2>Examen de Listening: School Life</h2>
+  <p>Haz clic en el botón para reproducir el audio. Solo puedes reproducirlo <strong>dos veces</strong>.</p>
+  <audio id="examAudio" src="school_life_audio.mp3"></audio>
+  <button onclick="playAudio()">Reproducir Audio</button>
+  <script>
+    var audio = document.getElementById("examAudio");
+    var playCount = parseInt(sessionStorage.getItem("playCount")) || 0;
+    console.log("Initial playCount:", playCount);
+    if (playCount >= 2) {
+      document.querySelector("button").disabled = true;
+    }
+    function playAudio() {
+      if (playCount < 2) {
+        try {
+          audio.play();
+          playCount++;
+          console.log("Play count incremented to:", playCount);
+          sessionStorage.setItem("playCount", playCount);
+          if (playCount === 2) {
+            document.querySelector("button").disabled = true;
+            console.log("Limit reached, button disabled");
+          }
+        } catch (error) {
+          console.log("Error al reproducir el audio:", error);
         }
-      } catch (error) {
-        console.log("Error al reproducir el audio:", error);
       }
     }
-  }
-  audio.onplay = function() {
-    if (playCount >= 2) {
-      audio.pause();
-      audio.currentTime = 0;
-      console.log("Playback prevented, count:", playCount);
-    }
-  };
-</script>
+    audio.onplay = function() {
+      if (playCount >= 2) {
+        audio.pause();
+        audio.currentTime = 0;
+        console.log("Playback prevented, count:", playCount);
+      }
+    };
+  </script>
+</body>
+</html>
