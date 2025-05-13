@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Examen de Listening: School Life</title>
+</head>
+<body>
+    <h2>Examen de Listening: School Life</h2>
+    <p>Haz clic en el botón para reproducir el audio. Solo puedes reproducirlo <strong>dos veces</strong>.</p>
+    <audio id="examAudio" src="school_life_audio.mp3"></audio>
+    <button onclick="playAudio()">Reproducir Audio</button>
+
+    <script>
+        var audio = document.getElementById("examAudio");
+        var playCount = parseInt(sessionStorage.getItem("playCount")) || 0;
+
+        if (playCount >= 2) {
+            document.querySelector("button").disabled = true;
+        }
+
+        function playAudio() {
+            if (playCount < 2) {
+                audio.play().catch(error => {
+                    console.log("Error al reproducir el audio:", error);
+                });
+                playCount++;
+                sessionStorage.setItem("playCount", playCount);
+                if (playCount == 2) {
+                    document.querySelector("button").disabled = true;
+                }
+            }
+        }
+
+        audio.onplay = function() {
+            if (playCount >= 2) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+        };
+    </script>
+</body>
+</html>
