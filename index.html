@@ -16,34 +16,29 @@
   <button onclick="playAudio()">Reproducir Audio</button>
   <script>
     var audio = document.getElementById("examAudio");
-    var playCount = parseInt(sessionStorage.getItem("playCount")) || 0;
-    console.log("Initial playCount:", playCount);
+    var playCount = parseInt(sessionStorage.getItem("playCount")) || 0; // Asegura que sea un número
+    console.log("Initial playCount:", playCount); // Para depurar
     if (playCount >= 2) {
       document.querySelector("button").disabled = true;
     }
     function playAudio() {
+      console.log("playCount before playing:", playCount); // Depuración antes de reproducir
       if (playCount < 2) {
-        try {
-          audio.play();
+        audio.play().then(() => {
           playCount++;
-          console.log("Play count incremented to:", playCount);
-          sessionStorage.setItem("playCount", playCount);
+          sessionStorage.setItem("playCount", playCount.toString()); // Guardar como cadena
+          console.log("Play count incremented to:", playCount); // Depuración después de incrementar
           if (playCount === 2) {
             document.querySelector("button").disabled = true;
             console.log("Limit reached, button disabled");
           }
-        } catch (error) {
+        }).catch(error => {
           console.log("Error al reproducir el audio:", error);
-        }
+        });
+      } else {
+        console.log("Maximum plays reached:", playCount);
       }
     }
-    audio.onplay = function() {
-      if (playCount >= 2) {
-        audio.pause();
-        audio.currentTime = 0;
-        console.log("Playback prevented, count:", playCount);
-      }
-    };
   </script>
 </body>
 </html>
