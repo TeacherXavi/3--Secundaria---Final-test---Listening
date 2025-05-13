@@ -1,31 +1,12 @@
-<script>
-  var audio = document.getElementById("examAudio");
-  var playCount = parseInt(sessionStorage.getItem("playCount")) || 0; // Asegura que sea un número
-  console.log("Initial playCount:", playCount); // Para depurar
-  if (playCount >= 2) {
-    document.querySelector("button").disabled = true;
-  }
-  function playAudio() {
-    if (playCount < 2) {
-      try {
-        audio.play();
-        playCount++;
-        console.log("Play count incremented to:", playCount); // Para depurar
-        sessionStorage.setItem("playCount", playCount);
-        if (playCount === 2) {
-          document.querySelector("button").disabled = true;
-          console.log("Limit reached, button disabled");
-        }
-      } catch (error) {
-        console.log("Error al reproducir el audio:", error);
-      }
+function playAudio() {
+  if (playCount < 2) {
+    audio.play();
+    playCount++;
+    sessionStorage.setItem("playCount", playCount.toString());
+    console.log("Play count:", playCount);
+    if (playCount === 2) {
+      document.querySelector("button").disabled = true;
+      console.log("Limit reached");
     }
   }
-  audio.onplay = function() {
-    if (playCount >= 2) {
-      audio.pause();
-      audio.currentTime = 0;
-      console.log("Playback prevented, count:", playCount);
-    }
-  };
-</script>
+}
